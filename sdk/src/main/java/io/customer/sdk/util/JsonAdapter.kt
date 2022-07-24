@@ -43,7 +43,7 @@ class JsonAdapter internal constructor(val moshi: Moshi) {
 
         if (json.isNotEmpty() && json[0] == '[') throw IllegalArgumentException("String is a list. Use `fromJsonList` instead.")
 
-        val jsonAdapter = moshi.adapter(T::class.java)
+        val jsonAdapter = moshi.adapter(T::class.java).lenient()
 
         return jsonAdapter.fromJson(json) as T
     }
@@ -65,7 +65,7 @@ class JsonAdapter internal constructor(val moshi: Moshi) {
         if (json.isNotEmpty() && json[0] != '[') throw IllegalArgumentException("String is not a list. Use `fromJson` instead.")
 
         val type = Types.newParameterizedType(List::class.java, T::class.java)
-        val adapter = moshi.adapter<List<T>>(type)
+        val adapter = moshi.adapter<List<T>>(type).lenient()
 
         return adapter.fromJson(json) as List<T>
     }
